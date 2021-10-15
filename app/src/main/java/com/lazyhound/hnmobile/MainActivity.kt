@@ -1,12 +1,13 @@
 package com.lazyhound.hnmobile
 
-import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.GONE
 import android.widget.Toast
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.lazyhound.hnmobile.utils.SwipeToDelete
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,8 +19,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: RecyclerAdapter
     private var news: MutableList<News> = ArrayList()
 
-    private val lastVisibleItemPosition: Int
-        get() = linearLayoutManager.findLastVisibleItemPosition()
+    private fun setRecyclerViewItemTouchListener() {
+        val swipeHandler = object : SwipeToDelete(applicationContext) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
+                val position = viewHolder.adapterPosition
+                news.removeAt(position)
+                hnRecyclerView.adapter!!.notifyItemRemoved(position)
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(swipeHandler)
+        itemTouchHelper.attachToRecyclerView(hnRecyclerView)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,8 +39,8 @@ class MainActivity : AppCompatActivity() {
         linearLayoutManager = LinearLayoutManager(this)
         hnRecyclerView.layoutManager = linearLayoutManager
 
-        var apiService: APIService = RestClient.client.create(APIService::class.java);
-        val call = apiService.fetchNews();
+        val apiService: APIService = RestClient.client.create(APIService::class.java)
+        val call = apiService.fetchNews()
         call.enqueue(object : Callback<NewsList> {
 
             override fun onResponse(call: Call<NewsList>, response: Response<NewsList>) {
@@ -46,5 +58,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(applicationContext, t.localizedMessage, Toast.LENGTH_SHORT).show()
             }
         })
+        setRecyclerViewItemTouchListener()
     }
 }

@@ -5,4 +5,5 @@ class News {
     var author: String? = ""
     var created_at: String? = ""
     var story_url: String? = ""
+    var title: String? = ""
 }

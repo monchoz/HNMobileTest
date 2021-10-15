@@ -39,7 +39,7 @@ class RecyclerAdapter(private val news: MutableList<News>) : RecyclerView.Adapte
 
         fun bind(news: News) {
             this.news = news
-            view.hnItemTitle.text = news.story_title
+            view.hnItemTitle.text = if (news.story_title.isNullOrBlank()) news.title else news.story_title
             view.hnItemSubTitle.text = news.author
         }
     }
