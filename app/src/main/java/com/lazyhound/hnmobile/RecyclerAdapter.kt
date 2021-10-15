@@ -6,6 +6,9 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_news.view.*
+import org.ocpsoft.prettytime.PrettyTime
+import java.text.SimpleDateFormat
+import java.util.*
 
 class RecyclerAdapter(private val news: MutableList<News>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
@@ -39,8 +42,11 @@ class RecyclerAdapter(private val news: MutableList<News>) : RecyclerView.Adapte
 
         fun bind(news: News) {
             this.news = news
+            val dateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(news.created_at)
+            val prettyTime = PrettyTime(dateTime)
+            val ago: String = prettyTime.format(Date(dateTime.time))
             view.hnItemTitle.text = if (news.story_title.isNullOrBlank()) news.title else news.story_title
-            view.hnItemSubTitle.text = news.author
+            view.hnItemSubTitle.text = news.author + " - " + ago
         }
     }
 }
