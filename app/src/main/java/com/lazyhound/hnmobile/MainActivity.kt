@@ -2,7 +2,6 @@ package com.lazyhound.hnmobile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View.GONE
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var adapter: RecyclerAdapter
     private var news: MutableList<News> = ArrayList()
+
 
     private fun setRecyclerViewItemTouchListener() {
         val swipeHandler = object : SwipeToDelete(applicationContext) {
@@ -38,9 +38,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         linearLayoutManager = LinearLayoutManager(this)
         hnRecyclerView.layoutManager = linearLayoutManager
+        setRecyclerViewItemTouchListener()
+        swipeContainer.setOnRefreshListener {
+            refresh()
+        }
+        refresh()
+    }
 
+    private fun refresh() {
         val apiService: APIService = RestClient.client.create(APIService::class.java)
         val call = apiService.fetchNews()
+        news.clear()
         call.enqueue(object : Callback<NewsList> {
 
             override fun onResponse(call: Call<NewsList>, response: Response<NewsList>) {
@@ -49,15 +57,14 @@ class MainActivity : AppCompatActivity() {
                     news.addAll(body.hits!!)
                     adapter = RecyclerAdapter(news)
                     hnRecyclerView.adapter = adapter
-                    progressBar.visibility = GONE
                 }
+                swipeContainer.isRefreshing = false;
             }
 
             override fun onFailure(call: Call<NewsList>, t: Throwable) {
-                progressBar.visibility = GONE
                 Toast.makeText(applicationContext, t.localizedMessage, Toast.LENGTH_SHORT).show()
+                swipeContainer.isRefreshing = false;
             }
         })
-        setRecyclerViewItemTouchListener()
     }
 }
