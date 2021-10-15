@@ -109,6 +109,7 @@ class MainActivity : AppCompatActivity() {
         val realmResults = realm.copyFromRealm(realm.where(NewsRealm::class.java).equalTo("active", true).findAll())
         list = realmResults.subList(0, realmResults.size)
         newsList = list
+        newsList.sortByDescending { it.created_at }
         adapter = RecyclerAdapter(newsList)
         hnRecyclerView.adapter = adapter
         swipeContainer.isRefreshing = false

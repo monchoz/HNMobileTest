@@ -11,7 +11,6 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import com.lazyhound.hnmobile.R
 import com.lazyhound.hnmobile.db.NewsRealm
-import com.lazyhound.hnmobile.models.News
 
 class NewsActivity : AppCompatActivity() {
 

@@ -11,7 +11,16 @@ import com.lazyhound.hnmobile.db.NewsRealm
 import kotlinx.android.synthetic.main.item_news.view.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
+import java.time.temporal.TemporalQueries.localDate
+
+
+
 
 class RecyclerAdapter(private val news: MutableList<NewsRealm>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
@@ -45,9 +54,10 @@ class RecyclerAdapter(private val news: MutableList<NewsRealm>) : RecyclerView.A
 
         fun bind(news: NewsRealm) {
             this.news = news
-            val dateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(news.created_at)
-            val prettyTime = PrettyTime(dateTime)
-            val ago: String = prettyTime.format(Date(dateTime.time))
+            val datetime = LocalDateTime.parse(news.created_at, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))
+            val date = Date.from(datetime.toInstant(ZoneOffset.UTC))
+            val prettyTime = PrettyTime()
+            val ago: String = prettyTime.format(date)
             view.hnItemTitle.text = if (news.story_title.isNullOrBlank()) news.title else news.story_title
             view.hnItemSubTitle.text = news.author + " - " + ago
         }
