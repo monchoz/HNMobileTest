@@ -1,4 +1,4 @@
-package com.lazyhound.hnmobile
+package com.lazyhound.hnmobile.rest
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -16,6 +16,6 @@ object RestClient {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
             }
-            return this.retrofit!!
+            return retrofit!!
         }
 }

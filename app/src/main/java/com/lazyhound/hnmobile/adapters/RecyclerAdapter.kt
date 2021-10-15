@@ -1,16 +1,19 @@
-package com.lazyhound.hnmobile
+package com.lazyhound.hnmobile.adapters
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
+import com.lazyhound.hnmobile.R
+import com.lazyhound.hnmobile.activities.NewsActivity
+import com.lazyhound.hnmobile.db.NewsRealm
 import kotlinx.android.synthetic.main.item_news.view.*
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RecyclerAdapter(private val news: MutableList<News>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(private val news: MutableList<NewsRealm>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflatedView = parent.inflate(R.layout.item_news, false)
@@ -26,7 +29,7 @@ class RecyclerAdapter(private val news: MutableList<News>) : RecyclerView.Adapte
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         private var view: View = v
-        private var news: News? = null
+        private var news: NewsRealm? = null
 
         init {
             v.setOnClickListener(this)
@@ -40,7 +43,7 @@ class RecyclerAdapter(private val news: MutableList<News>) : RecyclerView.Adapte
             }
         }
 
-        fun bind(news: News) {
+        fun bind(news: NewsRealm) {
             this.news = news
             val dateTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(news.created_at)
             val prettyTime = PrettyTime(dateTime)

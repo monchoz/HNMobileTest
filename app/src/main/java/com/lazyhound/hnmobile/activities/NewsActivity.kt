@@ -1,4 +1,4 @@
-package com.lazyhound.hnmobile
+package com.lazyhound.hnmobile.activities
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,9 @@ import android.webkit.WebView
 
 import android.webkit.WebViewClient
 import android.widget.Toast
+import com.lazyhound.hnmobile.R
+import com.lazyhound.hnmobile.db.NewsRealm
+import com.lazyhound.hnmobile.models.News
 
 class NewsActivity : AppCompatActivity() {
 
@@ -16,7 +19,7 @@ class NewsActivity : AppCompatActivity() {
         const val EXTRA_TITLE = "title"
         const val EXTRA_URL = "url"
 
-        fun newIntent(context: Context, news: News): Intent {
+        fun newIntent(context: Context, news: NewsRealm): Intent {
             val detailIntent = Intent(context, NewsActivity::class.java)
 
             detailIntent.putExtra(EXTRA_TITLE, news.story_title)

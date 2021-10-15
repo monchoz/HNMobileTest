@@ -1,5 +1,6 @@
-package com.lazyhound.hnmobile
+package com.lazyhound.hnmobile.rest
 
+import com.lazyhound.hnmobile.models.NewsList
 import retrofit2.Call
 import retrofit2.http.GET
 
