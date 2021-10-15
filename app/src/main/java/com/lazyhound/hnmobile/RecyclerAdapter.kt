@@ -7,7 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_news.view.*
 
-class RecyclerAdapter(private val news: ArrayList<News>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
+class RecyclerAdapter(private val news: MutableList<News>) : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflatedView = parent.inflate(R.layout.item_news, false)
@@ -39,8 +39,8 @@ class RecyclerAdapter(private val news: ArrayList<News>) : RecyclerView.Adapter<
 
         fun bind(news: News) {
             this.news = news
-            view.hnItemTitle.text = news.title
-            view.hnItemSubTitle.text = news.subtitle
+            view.hnItemTitle.text = news.story_title
+            view.hnItemSubTitle.text = news.author
         }
     }
 }

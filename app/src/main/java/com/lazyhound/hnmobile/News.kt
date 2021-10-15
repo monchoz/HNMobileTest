@@ -1,7 +1,8 @@
 package com.lazyhound.hnmobile
 
-data class News(
-    var title: String? = "",
-    var subtitle: String? = "",
-    var url: String? = ""
-)
+class News {
+    var story_title: String? = ""
+    var author: String? = ""
+    var created_at: String? = ""
+    var story_url: String? = ""
+}

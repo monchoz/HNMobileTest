@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_news.*
 import android.webkit.WebView
 
 import android.webkit.WebViewClient
+import android.widget.Toast
 
 class NewsActivity : AppCompatActivity() {
 
@@ -18,8 +19,8 @@ class NewsActivity : AppCompatActivity() {
         fun newIntent(context: Context, news: News): Intent {
             val detailIntent = Intent(context, NewsActivity::class.java)
 
-            detailIntent.putExtra(EXTRA_TITLE, news.title)
-            detailIntent.putExtra(EXTRA_URL, news.url)
+            detailIntent.putExtra(EXTRA_TITLE, news.story_title)
+            detailIntent.putExtra(EXTRA_URL, news.story_url)
 
             return detailIntent
         }
@@ -47,10 +48,12 @@ class NewsActivity : AppCompatActivity() {
 
         setTitle(title)
 
-        if (url != null) {
+        if (url != null && url.isNotEmpty()) {
             webView.settings.setJavaScriptEnabled(true)
             webView.setWebViewClient(webClient())
             webView.loadUrl(url)
+        } else {
+            Toast.makeText(applicationContext, "Empty URL", Toast.LENGTH_SHORT).show()
         }
     }
 
